@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="">
+	  <meta name="keywords" content="">
+  	<meta name="author" content="Khalil Khouirate">
+    <title>Pubmed artikelen | Welcome</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <header>
+          <h1><span class="highlight"></span> </h1>
+        </div>
+        <nav>
+          <ul>
+            <li class="current"><a href="help.html">Help</a></li>
+
+
+          </ul>
+        </nav>
+      </div>
+
+    </header>
+
+    <form action="/results" id="searchform" method="POST">
+        <label for="s" class="hidden">Zoekfuntie voor artikelen:</label>
+        <div margin-right="10px">
+            <input type="text" id="s" name="s" value="" style="font-size: 16pt">
+            <input type="submit" value="Zoeken" id="searchsubmit" style="font-size: 13pt">
+        </div>
+    </form>
+
+  <p></p>
+  <p></p>
+<button type="button">De gevonden resultaten downloaden</button>
+  <p></p>
+    <p></p>
+<TABLE BORDER="1">
+    <TR> <TH>Title article</TH> <TH>LOX Type</TH> <TH>Organism</TH> <TH>Kingdom</TH><TH>Function/Application</TH><TH>Author</TH><TH>PMID</TH> <TH>Article score</TH> <TH>Date of publication</TH> <TH>MeSH</TH> <TH>Abstract</TH>
+    {% for item in lijst %}
+        {% if 'plant' in item.get("MH", "?") %}
+            <TR> <TD>{{ item.get("TI", "?") }}</TD> <TD></TD> <TD>Plant</TD> <TD></TD><TD></TD><TD>{{ item.get("FAU", "?") }}</TD><TD>{{ item.get("PMID", "?") }}</TD><TD></TD><TD>{{ item.get("DP", "?") }}</TD><TD>{{ item.get("MH", "?") }}</TD><TD>{{ item.get("AB", "?") }}</TD>
+
+        {% else %}
+            <TR> <TD>{{ item.get("TI", "?") }}</TD> <TD></TD> <TD>Geen Plant</TD> <TD></TD><TD></TD><TD>{{ item.get("FAU", "?") }}</TD><TD>{{ item.get("PMID", "?") }}</TD><TD></TD><TD>{{ item.get("DP", "?") }}</TD><TD>{{ item.get("MH", "?") }}</TD><TD>{{ item.get("AB", "?") }}</TD>
+        {% endif %}
+    {% endfor %}
+
+</TABLE>
+
+
+
+<body>
+
+
+    <section id="showcase">
+      <div class="container">
+        <h1> </h1>
+        <p></p>
+      </div>
+    </section>
+
+        <h1></h1>
+
+      </div>
+    </section>
+
+
+          <p></p>
+        </div>
+          <p></p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Khalil Khouirate, Copyright &copy; 2017</p>
+    </footer>
+  </body>
+</html>
