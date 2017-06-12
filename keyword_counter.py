@@ -1,5 +1,7 @@
 from Bio import Entrez, Medline
 from Keyword_list import Keywords
+import json
+
 
 
 
@@ -12,16 +14,39 @@ def search():
 def medline():   
     handle = Entrez.efetch(db='pubmed', id=search(), rettype='medline', retmode='text')
     records = Medline.parse(handle)
-    records = list(records)    
+    records = list(records)
+
+    d = []
+
+    
     for record in records:
+        ID = record.get('PMID','?')
         AB = record.get('AB','?').upper()
 
         wordlist = AB.split() #split de Abstract string in lijst met woorden
         wordfreq = []
-        for i in Keywords:
-            wordfreq.append(wordlist.count(i))
+        
+        wordfreq = [wordlist.count(p) for p in Keywords]
+        freqdict = dict(zip(Keywords,wordfreq))
 
-        #print('String\n' + AB+ '\n')
-        print(list(zip(Keywords, wordfreq)))
-        print()
+        data = [(freqdict[key], key) for key in freqdict]
+        data.sort()
+        data.reverse()
 
+        result = {ID: data}
+        d.append(result)
+
+
+    with open('Output.json','w') as f:
+        json.dump(d, f)
+        #print(result)
+        #print(records)
+        #print(ID)
+        #print(data)
+ 
+        #with open('Output.json','w') as outfile:
+            #json.dump(data, outfile)
+
+
+
+        
