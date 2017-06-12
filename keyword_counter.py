@@ -2,9 +2,6 @@ from Bio import Entrez, Medline
 from Keyword_list import Keywords
 import json
 
-
-
-
 def search():
     Entrez.email = 'your.email@example.com'
     handle = Entrez.esearch(db='pubmed',sort='relevance',retmax='10',term='LOX')
@@ -33,7 +30,11 @@ def medline():
         data.sort()
         data.reverse()
 
-        result = {ID: data}
+        data2 = [(t[1],t[0]) for t in data]
+
+        #print(data2)
+        
+        result = {ID: data2}
         d.append(result)
 
 
@@ -46,7 +47,6 @@ def medline():
  
         #with open('Output.json','w') as outfile:
             #json.dump(data, outfile)
-
 
 
         
