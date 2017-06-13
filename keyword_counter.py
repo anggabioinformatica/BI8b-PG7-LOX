@@ -2,14 +2,14 @@ from Bio import Entrez, Medline
 from Keyword_list import Keywords
 import json
 
-def search():
+def search(zoek):
     Entrez.email = 'your.email@example.com'
-    handle = Entrez.esearch(db='pubmed',sort='relevance',retmax='10',term='LOX')
+    handle = Entrez.esearch(db='pubmed',sort='relevance',retmax='10',term= zoek)
     results = Entrez.read(handle)
     return results['IdList']
 
-def medline():   
-    handle = Entrez.efetch(db='pubmed', id=search(), rettype='medline', retmode='text')
+def medline(zoek):   
+    handle = Entrez.efetch(db='pubmed', id=search(zoek), rettype='medline', retmode='text')
     records = Medline.parse(handle)
     records = list(records)
 
