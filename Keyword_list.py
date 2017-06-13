@@ -19,6 +19,20 @@ Keywords = ['LOX-1'         ,
             'ACITVITY'      ,
             'PROTEIN'       ,
             'RECOMBINATION' ,
+			'MEDICAL'		,
+			'HUMAN'			,
+			'PLANT'			,
+			'RESEARCH'		,
+			'BACTERIA'		,
+			'ARCHAEA'		,
+			'EUKARYOTA'		,
+			'ANIMAL'		,
+			'FUNGI'			,
+			'CANCER'		,
+			'TUMOR'			,
+			'BIOLOGY'		,
+			'INDUCED'		,
+			
             ]
             
             
