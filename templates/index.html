@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="">
@@ -8,7 +9,13 @@
   	<meta name="author" content="Khalil Khouirate">
     <title>Pubmed artikelen | Welcome</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-  </head>
+       <style type="text/css">
+        #mynetwork {
+            width: 1000px;
+            height: 700px;
+            border: 1px solid lightgray;
+        }
+    </style>
   <body>
     <header>
           <h1><span class="highlight"></span> </h1>
@@ -23,7 +30,39 @@
       </div>
 
     </header>
+	<div id="mynetwork"></div>
 
+<script type="text/javascript">
+    // create an array with nodes
+    var nodes = new vis.DataSet([
+        {id: 1, label: 'Node 1'},
+        {id: 2, label: 'Node 2'},
+        {id: 3, label: 'Node 3'},
+        {id: 4, label: 'Node 4'},
+        {id: 5, label: 'Node 5'}
+    ]);
+
+    // create an array with edges
+    var edges = new vis.DataSet([
+        {from: 1, to: 3},
+        {from: 1, to: 2},
+        {from: 2, to: 4},
+        {from: 2, to: 5}
+    ]);
+
+    // create a network
+    var container = document.getElementById('mynetwork');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {};
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+</script>
     <form action="/results" id="searchform" method="POST">
         <label for="s" class="hidden">Zoekfuntie voor artikelen:</label>
         <div margin-right="10px">
@@ -38,19 +77,15 @@
   <p></p>
     <p></p>
 <TABLE BORDER="1">
-    <TR> <TH>Title article</TH> <TH>LOX Type</TH> <TH>Organism</TH> <TH>Kingdom</TH><TH>Function/Application</TH><TH>Author</TH><TH>PMID</TH> <TH>Article score</TH> <TH>Date of publication</TH> <TH>MeSH</TH> <TH>Abstract</TH>
-    {% for item in lijst %}
-        {% if 'plant' in item.get("MH", "?") %}
-            <TR> <TD>{{ item.get("TI", "?") }}</TD> <TD></TD> <TD>Plant</TD> <TD></TD><TD></TD><TD>{{ item.get("FAU", "?") }}</TD><TD>{{ item.get("PMID", "?") }}</TD><TD></TD><TD>{{ item.get("DP", "?") }}</TD><TD>{{ item.get("MH", "?") }}</TD><TD>{{ item.get("AB", "?") }}</TD>
+    <TR> <TH>Title article</TH> <TH>LOX Type</TH> <TH>Organism</TH> <TH>Kingdom</TH> <TH>Function/Application</TH> <TH>Author (only first)</TH> <TH>PMID</TH> <TH>Date of publication</TH> <TH>MeSH</TH> <TH>Abstract</TH>
+    {# for i in range(0 - sturen|length) #}
+    {% for item in sturen %}
+        <TR> <TD>{{ item[0] }}</TD> <TD>{{ item[1] }}</TD> <TD>{{ item[2] }}</TD> <TD>{{ item[3] }}</TD> <TD>{{ item[4] }}</TD> <TD>{{ item[5][0] }}</TD> <TD><a href="http://www.pubmed.com/{{ item[6] }}">{{ item[6] }}</a></TD> <TD>{{ item[7] }}</TD> <TD>{{ item[8] }}</TD> <TD>{{ item[9][0:40] }}</TD>
+        {#<TR> <TD>{{ sturen[1][0] }}</TD> <TD>{{ sturen[i][1] }}</TD> <TD>{{ sturen[i][2] }}</TD> <TD>{{ sturen[i][3] }}</TD> <TD>{{ sturen[i][4] }}</TD> <TD>{{ sturen[i][5] }}</TD><TD>{{ sturen[i][6] }}</TD> <TD>{{ sturen[i][7] }}</TD> <TD>{{ sturen[i][8] }}</TD> <TD>{{ sturen[i][9] }}</TD> <TD>{{ sturen[i][10] }}</TD> #}
 
-        {% else %}
-            <TR> <TD>{{ item.get("TI", "?") }}</TD> <TD></TD> <TD>Geen Plant</TD> <TD></TD><TD></TD><TD>{{ item.get("FAU", "?") }}</TD><TD>{{ item.get("PMID", "?") }}</TD><TD></TD><TD>{{ item.get("DP", "?") }}</TD><TD>{{ item.get("MH", "?") }}</TD><TD>{{ item.get("AB", "?") }}</TD>
-        {% endif %}
     {% endfor %}
 
 </TABLE>
-
-
 
 <body>
 
@@ -76,7 +111,8 @@
     </section>
 
     <footer>
-      <p>Khalil Khouirate, Copyright &copy; 2017</p>
+      <p>Khalil Khouirate; Jacco Schaap, Copyright &copy; 2017</p>
     </footer>
+  </body>
   </body>
 </html>
