@@ -32,7 +32,21 @@ Keywords = ['LOX-1'         ,
 			'TUMOR'			,
 			'BIOLOGY'		,
 			'INDUCED'		,
-			
             ]
-            
-            
+#dictionary met loxnummers en diens synoniemen in lists als values
+Lox_dict = {'lox1': ["lox1", "lox-1", "1-lox", "1-lipoxygenase", "lipoxygenase-1", "lipoxygenase1", "1lipoxygenase"],
+            'lox2': ["lox2", "lox-2", "2-lox", "2-lipoxygenase", "lipoxygenase-2", "lipoxygenase2", "2lipoxygenase"],
+            'lox3': ["lox3", "lox-3", "3-lox", "3-lipoxygenase", "lipoxygenase-3", "lipoxygenase3", "3lipoxygenase"],
+            'lox4': ["lox4", "lox-4", "4-lox", "4-lipoxygenase", "lipoxygenase-4", "lipoxygenase4", "4lipoxygenase"],
+            'lox5': ["lox5", "lox-5", "5-lox", "5-lipoxygenase", "lipoxygenase-5", "lipoxygenase5", "5lipoxygenase"],
+            'lox6': ["lox6", "lox-6", "6-lox", "6-lipoxygenase", "lipoxygenase-6", "lipoxygenase6", "6lipoxygenase"],
+            'lox7': ["lox7", "lox-7", "7-lox", "7-lipoxygenase", "lipoxygenase-7", "lipoxygenase7", "7lipoxygenase"],
+            'lox8': ["lox8", "lox-8", "8-lox", "8-lipoxygenase", "lipoxygenase-8", "lipoxygenase8", "8lipoxygenase"],
+            'lox9': ["lox9", "lox-9", "9-lox", "9-lipoxygenase", "lipoxygenase-9", "lipoxygenase9", "9lipoxygenase"],
+            'lox10': ["lox10", "lox-10", "10-lox", "10-lipoxygenase", "lipoxygenase-10", "lipoxygenase10", "10lipoxygenase"],
+            'lox11': ["lox11", "lox-11", "11-lox", "11-lipoxygenase", "lipoxygenase-11", "lipoxygenase11", "11lipoxygenase"],
+            'lox12': ["lox12", "lox-12", "12-lox", "12-lipoxygenase", "lipoxygenase-12", "lipoxygenase12", "12lipoxygenase"],
+            'lox13': ["lox13", "lox-13", "13-lox", "13-lipoxygenase", "lipoxygenase-13", "lipoxygenase13", "13lipoxygenase"],
+            'lox14': ["lox14", "lox-14", "14-lox", "14-lipoxygenase", "lipoxygenase-14", "lipoxygenase14", "14lipoxygenase"],
+            'lox15': ["lox15", "lox-15", "15-lox", "15-lipoxygenase", "lipoxygenase-15", "lipoxygenase15", "15lipoxygenase"]
+            }

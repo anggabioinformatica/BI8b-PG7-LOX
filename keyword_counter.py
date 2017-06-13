@@ -38,6 +38,7 @@ def medline(zoek):
         d.append(result)
 
 
+
     with open('Output.json','w') as f:
         json.dump(d, f)
         #print(result)

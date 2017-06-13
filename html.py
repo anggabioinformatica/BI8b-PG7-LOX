@@ -3,11 +3,11 @@
 ### E-mail: jacco_schaap@hotmail.com
 ### Last update 13-6-17
 #####################################
-
+from Bio import Entrez, Medline
+from Keyword_list import Keywords, Lox_dict
 from flask import Flask, render_template, request
 app = Flask(__name__)
-from Bio import Entrez, Medline
-from Keyword_list import Keywords
+
 
 # lox1 = ["LOX1", "LOX-1", "1-LOX", "1-lipoxygenase", "lipoxygenase-1", "lipoxygenase1", "1lipoxygenase", "Lipoprotein Receptor-1"]
 # lox2 = ["LOX2", "LOX-2", "2-LOX", "2-lipoxygenase", "lipoxygenase-2", "lipoxygenase2", "2lipoxygenase", "Lipoprotein Receptor-2"]
@@ -29,6 +29,7 @@ from Keyword_list import Keywords
 def main():
     # search()
     # medline()
+
     app.run(debug=True)
 
 
@@ -62,13 +63,16 @@ def send():
         lijst = medline(zoek)
         sturen = []
         d = []
+        #get selected value from Lox dropdown menu
+        Lox_type = request.form['Lox_type']
+        Keyword_type = request.form['Keyword_type']
 
         for item in lijst:
             ID = item.get('PMID', '?')
             AB = item.get('AB', '?').upper()
+            y=0
 
             wordlist = AB.split()  # split de Abstract string in lijst met woorden
-            wordfreq = []
 
             wordfreq = [wordlist.count(p) for p in Keywords]
             freqdict = dict(zip(Keywords, wordfreq))
@@ -92,17 +96,21 @@ def send():
             ### first item in temporary list
             tijdelijk.append(item.get("TI", "?"))  # first item of list is title
 
-            ### second item in temporary list
+            ### second item in temporary list is lox type
             hits = []  # empty hit list per abstract
-            if "AB" in item:  # select abstract only ant iterate over it
+            if "AB" in item:  # select abstract only and iterate over it
                 abstractje = item.get("AB", "?")
                 abstract = abstractje.lower()
                 abstract = abstract.split(' ')  # split abstract to list for lox search
                 for woord in abstract:
                     woord = woord.replace('(', '').replace(')', '').replace(',', '').replace('.', '').replace(';', '')
                     if 'lox' in woord and woord not in hits:
-                        hits.append(woord)
-                        # print hits
+                        ### gets key from synonym values list from Lox_dict
+                        for q, sym_list in Lox_dict.iteritems():
+                            if woord in sym_list and q not in hits: #append correct lox type based on synonym only if it is not appended already
+                                hits.append(q)
+
+            #print hits
             tijdelijk.append("; ".join(hits))
 
             ### third item in temporary list is organism
@@ -111,7 +119,7 @@ def send():
             ### fourth item in temporary list is the kingdom
             tijdelijk.append('***ANGGA***')
 
-            ### fith item are the applications found in the abstract
+            ### fifth item are the applications found in the abstract
             toepassing_list = []
             for key, value in result.iteritems():
                 for toepassing in value:
@@ -119,7 +127,7 @@ def send():
                         toepassing_list.append(toepassing[0])
             tijdelijk.append("; ".join(toepassing_list))
 
-            ### sith item are the authors of the article
+            ### sixth item are the authors of the article
             tijdelijk.append(item.get("AU", "?"))
 
             ### seventh item is the PubMedID of the article
@@ -134,7 +142,13 @@ def send():
             ### eleventh item is the abstract of the article
             tijdelijk.append(item.get("AB", "?"))
 
-            sturen.append(tijdelijk)
+            #Checks if the chosen lox types is found in the articles
+            if Lox_type == "all" or Lox_type in tijdelijk[1]:
+                #Checks if the chosen keywords are found in the article.
+                if Keyword_type == "all" or Keyword_type in tijdelijk[4]:
+                    #appends the article to the results table
+                    sturen.append(tijdelijk)
+
         # print sturen
         return render_template('index.html', sturen=sturen)
 
