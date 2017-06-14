@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html>
-       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="">
@@ -22,7 +20,10 @@
         </div>
         <nav>
           <ul>
-            <li class="current"><a href="help.html">Help</a></li>
+             <li class="current"><a href="index.html">Home</a></li>
+
+                  <li><a href="help.html">Help</a></li>
+
 
 
           </ul>
@@ -30,44 +31,12 @@
       </div>
 
     </header>
-	<div id="mynetwork"></div>
 
-<script type="text/javascript">
-    // create an array with nodes
-    var nodes = new vis.DataSet([
-        {id: 1, label: 'Node 1'},
-        {id: 2, label: 'Node 2'},
-        {id: 3, label: 'Node 3'},
-        {id: 4, label: 'Node 4'},
-        {id: 5, label: 'Node 5'}
-    ]);
-
-    // create an array with edges
-    var edges = new vis.DataSet([
-        {from: 1, to: 3},
-        {from: 1, to: 2},
-        {from: 2, to: 4},
-        {from: 2, to: 5}
-    ]);
-
-    // create a network
-    var container = document.getElementById('mynetwork');
-
-    // provide the data in the vis format
-    var data = {
-        nodes: nodes,
-        edges: edges
-    };
-    var options = {};
-
-    // initialize your network!
-    var network = new vis.Network(container, data, options);
-</script>
     <form action="/results" id="searchform" method="POST">
         <label for="s" class="hidden">Zoekfuntie voor artikelen:</label>
         <div margin-right="10px">
             <input type="text" id="s" name="s" value="" style="font-size: 16pt">
-             <select id="LOX_type" name="Lox_type" style="font-size: 12pt" >
+            <select id="LOX_type" name="Lox_type" style="font-size: 12pt" >
                 <option value="all">Lox Filter</option>
                 <option value="lox1">Lox-1</option>
                 <option value="lox2">Lox-2</option>
@@ -76,16 +45,16 @@
                 <option value="lox5">Lox-5</option>
                 <option value="lox6">Lox-6</option>
                 <option value="lox7">Lox-7</option>
-                <option value="lox8">Lox-8</option>
+               <option value="lox8">Lox-8</option>
                 <option value="lox9">Lox-9</option>
                 <option value="lox10">Lox-10</option>
                 <option value="lox11">Lox-11</option>
                 <option value="lox12">Lox-12</option>
-                <option value="lox13">Lox-13</option>
+               <option value="lox13">Lox-13</option>
                 <option value="lox14">Lox-14</option>
                 <option value="lox15">Lox-15</option>
-            </select>
-            <select id="Keyword_type" name="Keyword_type" style="font-size: 12pt" >
+           </select>
+           <select id="Keyword_type" name="Keyword_type" style="font-size: 12pt" >
                 <option value="all">Keywords Filter</option>
                 <option value="ACTIVITY">Activity</option>
                 <option value="AGENTS">Agents</option>
@@ -113,21 +82,24 @@
                 <option value="RESEARCH">Research</option>
                 <option value="TUMOR">Tumor</option>
             </select>
-
             <input type="submit" value="Zoeken" id="searchsubmit" style="font-size: 13pt">
+            <form action="/results/graph" id="searchform" method="GET">
+                  <li><a href="/results/graph">GRAPH</a></li>
+            </form>
         </div>
+
     </form>
 
   <p></p>
   <p></p>
-<button type="button" style="font-size:9.5pt" >De gevonden resultaten downloaden</button>
+<button type="button">De gevonden resultaten downloaden</button>
   <p></p>
     <p></p>
 <TABLE BORDER="1">
-    <TR> <TH>Title article</TH> <TH>LOX Type</TH> <TH>Organism</TH> <TH>Kingdom</TH> <TH>Function/Application</TH> <TH>Author (only first)</TH> <TH>PMID</TH> <TH>Date of publication</TH> <TH>MeSH</TH> <TH>Abstract</TH>
+    <TR> <TH>Title article</TH> <TH>LOX Type</TH> <TH>Kingdom</TH> <TH>Function/Application</TH> <TH>Author (only first)</TH> <TH>PMID</TH> <TH>Date of publication</TH> <TH>MeSH</TH> <TH>Abstract</TH>
     {# for i in range(0 - sturen|length) #}
     {% for item in sturen %}
-        <TR> <TD>{{ item[0] }}</TD> <TD>{{ item[1] }}</TD> <TD>{{ item[2] }}</TD> <TD>{{ item[3] }}</TD> <TD>{{ item[4] }}</TD> <TD>{{ item[5][0] }}</TD> <TD><a href="http://www.pubmed.com/{{ item[6] }}">{{ item[6] }}</a></TD> <TD>{{ item[7] }}</TD> <TD>{{ item[8] }}</TD> <TD>{{ item[9][0:40] }}</TD>
+        <TR> <TD>{{ item[0] }}</TD> <TD>{{ item[1] }}</TD> <TD>{{ item[2] }}</TD> <TD>{{ item[3] }}</TD> <TD>{{ item[4][0] }}</TD> <TD><a href="http://www.pubmed.com/{{ item[5] }}">{{ item[5] }}</a></TD> <TD>{{ item[6] }}</TD> <TD>{{ item[7] }}</TD> <TD>{{ item[8][0:40] }}</TD>
         {#<TR> <TD>{{ sturen[1][0] }}</TD> <TD>{{ sturen[i][1] }}</TD> <TD>{{ sturen[i][2] }}</TD> <TD>{{ sturen[i][3] }}</TD> <TD>{{ sturen[i][4] }}</TD> <TD>{{ sturen[i][5] }}</TD><TD>{{ sturen[i][6] }}</TD> <TD>{{ sturen[i][7] }}</TD> <TD>{{ sturen[i][8] }}</TD> <TD>{{ sturen[i][9] }}</TD> <TD>{{ sturen[i][10] }}</TD> #}
 
     {% endfor %}
