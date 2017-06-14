@@ -2,6 +2,8 @@ from Bio import Entrez, Medline
 from Keyword_list import Keywords
 import json
 
+#zoek = 'LOX-1'
+
 def search(zoek):
     Entrez.email = 'your.email@example.com'
     handle = Entrez.esearch(db='pubmed',sort='relevance',retmax='10',term= zoek)
@@ -49,5 +51,6 @@ def medline(zoek):
         #with open('Output.json','w') as outfile:
             #json.dump(data, outfile)
 
+medline(zoek)
 
         
