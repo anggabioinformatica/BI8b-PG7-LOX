@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8">
+    <title>GRAPH</title>
+
+    <style type="text/css">
+        #mynetwork {
+            width: 1000px;
+            height: 600px;
+            border: 1px solid lightgray;
+        }
+    </style>
+</head>
+<div id="mynetwork"></div>
+
+<script type="text/javascript">
+    // create an array with nodes
+    var nodes = new vis.DataSet([
+        {id: 1, label: 'LOX-1   15 HITS'},
+        {id: 2, label: 'REGULATIE  2 HITS'},
+        {id: 3, label: 'EXPRESSION   8 HITS'},
+        {id: 4, label: 'PROTEIN   2 HITS'},
+        {id: 5, label: 'OXIDATION   0 HITS'},
+        {id: 6, label: 'INHIBITION    1 HITS'},
+        {id: 7, label: 'HUMAN    3 HITS'},
+        {id: 8, label: 'INDUCED    1 HITS'}
+    ]);
+
+    // create an array with edges
+    var edges = new vis.DataSet([
+        {from: 1, to: 3},
+        {from: 1, to: 4},
+        {from: 2, to: 1},
+        {from: 3, to: 2},
+        {from: 4, to: 3},
+        {from: 1, to: 6},
+        {from: 8, to: 3},
+        {from: 8, to: 1},
+        {from: 4, to: 8},
+        {from: 7, to: 1},
+        {from: 7, to: 4},
+        {from: 2, to: 7}
+
+    ]);
+
+    // create a network
+    var container = document.getElementById('mynetwork');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {};
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+</script>
+
+<body>
+ <form method="post">
+        <button type="submit">Build GRAPH!</button>
+    </form>
+
+
+
+</body>
+</html>
