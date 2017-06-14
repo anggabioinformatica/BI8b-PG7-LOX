@@ -3,11 +3,11 @@
 ### E-mail: jacco_schaap@hotmail.com
 ### Last update 13-6-17
 #####################################
+
+from flask import Flask, render_template, request, url_for, redirect
+app = Flask(__name__)
 from Bio import Entrez, Medline
 from Keyword_list import Keywords, Lox_dict
-from flask import Flask, render_template, request
-app = Flask(__name__)
-
 
 # lox1 = ["LOX1", "LOX-1", "1-LOX", "1-lipoxygenase", "lipoxygenase-1", "lipoxygenase1", "1lipoxygenase", "Lipoprotein Receptor-1"]
 # lox2 = ["LOX2", "LOX-2", "2-LOX", "2-lipoxygenase", "lipoxygenase-2", "lipoxygenase2", "2lipoxygenase", "Lipoprotein Receptor-2"]
@@ -28,8 +28,7 @@ app = Flask(__name__)
 
 def main():
     # search()
-    # medline()
-
+    #medline()
     app.run(debug=True)
 
 
@@ -37,7 +36,7 @@ def search(zoek):
     Entrez.email = 'your.email@example.com'
     handle = Entrez.esearch(db='pubmed',
                             sort='relevance',
-                            retmax='10',
+                            retmax='1000',
                             term=zoek)
     results = Entrez.read(handle)
     return results["IdList"]
@@ -63,7 +62,8 @@ def send():
         lijst = medline(zoek)
         sturen = []
         d = []
-        #get selected value from Lox dropdown menu
+        # get selected value from Lox dropdown menu
+
         Lox_type = request.form['Lox_type']
         Keyword_type = request.form['Keyword_type']
 
@@ -72,7 +72,9 @@ def send():
             AB = item.get('AB', '?').upper()
             y=0
 
+
             wordlist = AB.split()  # split de Abstract string in lijst met woorden
+            wordfreq = []
 
             wordfreq = [wordlist.count(p) for p in Keywords]
             freqdict = dict(zip(Keywords, wordfreq))
@@ -96,30 +98,44 @@ def send():
             ### first item in temporary list
             tijdelijk.append(item.get("TI", "?"))  # first item of list is title
 
-            ### second item in temporary list is lox type
+            ### second item in temporary list
             hits = []  # empty hit list per abstract
-            if "AB" in item:  # select abstract only and iterate over it
+            if "AB" in item:  # select abstract only ant iterate over it
                 abstractje = item.get("AB", "?")
                 abstract = abstractje.lower()
                 abstract = abstract.split(' ')  # split abstract to list for lox search
                 for woord in abstract:
                     woord = woord.replace('(', '').replace(')', '').replace(',', '').replace('.', '').replace(';', '')
                     if 'lox' in woord and woord not in hits:
-                        ### gets key from synonym values list from Lox_dict
                         for q, sym_list in Lox_dict.iteritems():
-                            if woord in sym_list and q not in hits: #append correct lox type based on synonym only if it is not appended already
+                            if woord in sym_list and q not in hits:  # append correct lox type based on synonym only if it is not appended already
                                 hits.append(q)
+                        # print hits
 
-            #print hits
+
             tijdelijk.append("; ".join(hits))
 
             ### third item in temporary list is organism
-            tijdelijk.append('***ANGGA***')
 
-            ### fourth item in temporary list is the kingdom
-            tijdelijk.append('***ANGGA***')
+            organism_hits = []
+            if "MH" in item:  # select abstract only ant iterate over it
+                # abstractje = item.get("AB", "?")
+                mh_list = item.get("MH", "?")
 
-            ### fifth item are the applications found in the abstract
+                # abstract = abstractje.lower()
+                # abstract = abstract.split(' ')  # split abstract to list for lox search
+                for org in mh_list:
+                    org = org.replace('(', '').replace(')', '').replace(',', '').replace('.', '').replace(';', '').lower()
+                    if 'animal' in org and 'animal' not in organism_hits:
+                        organism_hits.append('animal')
+                    if 'plant' in org and 'plant' not in organism_hits:
+                        organism_hits.append('plant')
+                    if 'bacterial' in org and 'bacterial' not in organism_hits:
+                        organism_hits.append('bacterial')
+            tijdelijk.append("; ".join(organism_hits))
+
+
+            ### fith item are the applications found in the abstract
             toepassing_list = []
             for key, value in result.iteritems():
                 for toepassing in value:
@@ -127,7 +143,7 @@ def send():
                         toepassing_list.append(toepassing[0])
             tijdelijk.append("; ".join(toepassing_list))
 
-            ### sixth item are the authors of the article
+            ### sith item are the authors of the article
             tijdelijk.append(item.get("AU", "?"))
 
             ### seventh item is the PubMedID of the article
@@ -142,14 +158,27 @@ def send():
             ### eleventh item is the abstract of the article
             tijdelijk.append(item.get("AB", "?"))
 
-            #Checks if the chosen lox types is found in the articles
             if Lox_type == "all" or Lox_type in tijdelijk[1]:
-                #Checks if the chosen keywords are found in the article.
-                if Keyword_type == "all" or Keyword_type in tijdelijk[4]:
-                    #appends the article to the results table
-                    sturen.append(tijdelijk)
+                                                                    # Checks if the chosen keywords are found in the article.
 
+                if Keyword_type == "all" or Keyword_type in tijdelijk[3]:
+
+                                                                                                 # appends the article to the results table
+
+                    sturen.append(tijdelijk)
         # print sturen
-        return render_template('index.html', sturen=sturen)
+        return render_template('index.html',sturen=sturen)
+
+
+@app.route('/results/graph', methods=['GET'])
+def graph():
+    return render_template("graphh.html")
+
+
+
+
+
+
+
 
 main()
